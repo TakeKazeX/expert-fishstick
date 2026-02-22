@@ -1,0 +1,20 @@
+payload:  
+  - DOMAIN-SUFFIX,game.maj-soul.com
+  - DOMAIN-SUFFIX,gateway-cdn.maj-soul.com
+  - DOMAIN-SUFFIX,gateway-hw.maj-soul.com
+  - DOMAIN-SUFFIX,gateway-sy.catmjstudio.com
+  - DOMAIN-SUFFIX,gateway-sy.maj-soul.com
+  - DOMAIN-SUFFIX,gateway-v2.maj-soul.com
+  - DOMAIN-SUFFIX,lb-cdn.maj-soul.com
+  - DOMAIN-SUFFIX,lb-hw.maj-soul.com
+  - DOMAIN-SUFFIX,lb-sy.maj-soul.com
+  - DOMAIN-SUFFIX,lb-v2.maj-soul.com
+  - DOMAIN-SUFFIX,majsoul-hk-client.cn-hongkong.log.aliyuncs.com
+  - DOMAIN-SUFFIX,mahjong-jp.net
+  - DOMAIN-SUFFIX,maj-soul.com
+  - DOMAIN-SUFFIX,catmajsoul.com
+  - DOMAIN-SUFFIX,catmjstudio.com
+  - DOMAIN-SUFFIX,prprmoe.xyz
+  - DOMAIN-SUFFIX,sanbeiman.com
+  - DOMAIN-SUFFIX,riichimj.com
+  - DOMAIN-SUFFIX,lizhimahjong.com
