@@ -90,7 +90,6 @@ dns:
     - RULE-SET,AppleDomainCDN,real-ip
     - RULE-SET,AppleDomain,real-ip
     - RULE-SET,aisuite,fake-ip
-    - RULE-SET,emby,real-ip
     - RULE-SET,networktest,fake-ip
     - RULE-SET,microsoft,real-ip
     - RULE-SET,youtube,fake-ip
