@@ -1,21 +1,11 @@
 ### 包含「雀魂」与「麻雀一番街」
-### 条目来源 blackmatrix7 以及 「XinSSS/AdditionalRuleList」
-payload:  
-  - '+.game.maj-soul.com'
-  - '+.gateway-cdn.maj-soul.com'
-  - '+.gateway-hw.maj-soul.com'
-  - '+.gateway-sy.catmjstudio.com'
-  - '+.gateway-sy.maj-soul.com'
-  - '+.gateway-v2.maj-soul.com'
-  - '+.lb-cdn.maj-soul.com'
-  - '+.lb-hw.maj-soul.com'
-  - '+.lb-sy.maj-soul.com'
-  - '+.lb-v2.maj-soul.com'
-  - '+.majsoul-hk-client.cn-hongkong.log.aliyuncs.com'
-  - '+.mahjong-jp.net'
+### 来源 blackmatrix7 以及 「XinSSS/AdditionalRuleList」
+payload:
   - '+.maj-soul.com'
   - '+.catmajsoul.com'
   - '+.catmjstudio.com'
+  - '+.mahjong-jp.net'
+  - 'majsoul-hk-client.cn-hongkong.log.aliyuncs.com'
   - '+.prprmoe.xyz'
   - '+.sanbeiman.com'
   - '+.riichimj.com'
