@@ -107,7 +107,7 @@ dns:
     - https://doh.pub/dns-query
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   nameserver-policy:
-    "RULE-SET:chiao_adrules,meituan_ad": [rcode://name_error]
+    "RULE-SET:chiao_adrules": [rcode://name_error]
     "RULE-SET:direct,private,download": [1.12.12.12, 180.184.1.1]
     "RULE-SET:networktest,microsoft,youtube,google,twitter,telegram,meta,facebook,cloudflare,proxy": [https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24, https://cloudflare-dns.com/dns-query]
     "+.tv.apple.com": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
@@ -266,7 +266,7 @@ sub-rules:
     - MATCH,PASS
 
 rules:
-- RULE-SET,meituan_ad,🚫 广告净化
+- DOMAIN-REGEX,^beauty-.*-live\.meituan\.net$,🚫 广告净化
 - OR,((RULE-SET,chiao_adrules),(RULE-SET,chiao_adrules_ip,no-resolve)),🚫 广告净化
 - OR,((DST-PORT,123),(DST-PORT,6881-6889)),DIRECT
 - OR,((RULE-SET,direct),(RULE-SET,private),(RULE-SET,private_ip,no-resolve)),DIRECT
@@ -322,13 +322,6 @@ rule-providers:
     format: mrs
     path: ./rules/chiao_adrules_ip.mrs
     url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/adrules.mrs"
-  meituan_ad:
-    type: http
-    interval: 86400
-    behavior: domain
-    format: yaml
-    path: ./rules/meituan_ad.yaml
-    url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/meituan_ad.yaml"
   stun:
     type: http
     interval: 86400
