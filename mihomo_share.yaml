@@ -1,3 +1,8 @@
+### self-use config
+### update date: 2026-03-02
+### TODO: 
+### 1. anchors
+### 2. better handle ADs
 port: 7890
 socks-port: 7891
 mixed-port: 7892
@@ -80,7 +85,6 @@ dns:
     - RULE-SET,stun,real-ip
     - RULE-SET,PrivateTracker,real-ip
     - RULE-SET,networktest,real-ip
-    - RULE-SET,WeChat,real-ip
     - RULE-SET,aisuite,fake-ip
     - RULE-SET,appletv,real-ip
     - RULE-SET,applemusic,real-ip
@@ -104,15 +108,16 @@ dns:
     - https://doh.pub/dns-query
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   nameserver-policy:
+    "RULE-SET:217heidai-AD": [rcode://name_error]
+    "RULE-SET:meituan": [rcode://name_error]
     "+.tv.apple.com": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
     "RULE-SET:appletv": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
-    "RULE-SET:WeChat": [https://doh.pub/dns-query#disable-ipv6=true&skip-cert-verify=true]
     "RULE-SET:aisuite": [https://1.1.1.1/dns-query#disable-ipv6=true&skip-cert-verify=true]
-    "RULE-SET:217heidai-AD": [rcode://success]
+    "RULE-SET:WeChat": [https://doh.pub/dns-query#disable-ipv6=true&skip-cert-verify=true]
 
 tun:
-  enable: false
-  stack: mixed
+  enable: true
+  stack: gvisor
   dns-hijack: ["any:53","tcp://any:53"]
   auto-route: true
   auto-redirect: true
@@ -266,15 +271,14 @@ sub-rules:
 rules:
 - OR,((DST-PORT,123),(DST-PORT,6881-6889)),DIRECT
 - OR,((RULE-SET,direct),(RULE-SET,private),(RULE-SET,private_ip,no-resolve)),DIRECT
+- IP-CIDR,95.161.76.100/31,REJECT-DROP,no-resolve
+
+- OR,((RULE-SET,217heidai-AD),(RULE-SET,meituan)),🚫 广告净化
+- OR,((RULE-SET,httpdns),(RULE-SET,httpdns_ip,no-resolve)),REJECT
+
 - SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,443))),quic-logic
 - SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,3478-3481,5349,19302))),stun-logic
 - SUB-RULE,(DST-PORT,5222,5228-5230),gms-fcm
-
-- IP-CIDR,95.161.76.100/31,REJECT-DROP,no-resolve
-- RULE-SET,217heidai-AD,🚫 广告净化
-- RULE-SET,meituan,🚫 广告净化
-- OR,((RULE-SET,httpdns),(RULE-SET,httpdns_ip,no-resolve)),REJECT
-- DOMAIN-REGEX,^beauty-.*-live\.meituan\.net$,REJECT
 
 - OR,((RULE-SET,WeChat),(RULE-SET,WeChat_ip,no-resolve)),🧱 国内
 - DOMAIN-SUFFIX,push.apple.com,DIRECT
@@ -314,7 +318,7 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/217heidai-adblockfilters.mrs
-    url: "https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomolite.mrs"
+    url: "https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs"
   meituan:
     type: http
     interval: 86400
