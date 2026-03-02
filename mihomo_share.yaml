@@ -1,8 +1,7 @@
 ### self-use config
-### update date: 2026-03-02
+### update date: 2026-03-02-21:21
 ### TODO: 
 ### 1. anchors
-### 2. better handle ADs
 port: 7890
 socks-port: 7891
 mixed-port: 7892
@@ -73,6 +72,8 @@ dns:
     - RULE-SET,fakeip-filter,real-ip
     - RULE-SET,direct,real-ip
     - RULE-SET,private,real-ip
+    - RULE-SET,stun,real-ip
+    - RULE-SET,download,real-ip
     - DOMAIN-REGEX,^(stun|turn)\..*$,real-ip
     - DOMAIN-REGEX,^.*(\.stun\.|\.turn\.).*$,real-ip
     - DOMAIN,mtalk.google.com,real-ip
@@ -82,25 +83,24 @@ dns:
     - DOMAIN-SUFFIX,podcasts.apple.com,fake-ip
     - DOMAIN-REGEX,^[a-z0-9-]+-intl\.biligame\.net$,fake-ip
     - DOMAIN-REGEX,^.*trickcal.*\.bilibiligame\.net$,fake-ip
-    - RULE-SET,stun,real-ip
-    - RULE-SET,PrivateTracker,real-ip
-    - RULE-SET,networktest,real-ip
-    - RULE-SET,aisuite,fake-ip
     - RULE-SET,appletv,real-ip
     - RULE-SET,applemusic,real-ip
     - RULE-SET,AppleAPI-DOMAIN,fake-ip
     - RULE-SET,AppleDomainNoCDN,fake-ip
     - RULE-SET,AppleDomainCDN,real-ip
     - RULE-SET,AppleDomain,real-ip
+    - RULE-SET,aisuite,fake-ip
+    - RULE-SET,emby,real-ip
+    - RULE-SET,networktest,fake-ip
     - RULE-SET,microsoft,real-ip
     - RULE-SET,youtube,fake-ip
-    - RULE-SET,twitter,fake-ip
     - RULE-SET,google,fake-ip
+    - RULE-SET,twitter,fake-ip
     - RULE-SET,telegram,fake-ip
     - RULE-SET,meta,fake-ip
     - RULE-SET,facebook,fake-ip
-    - RULE-SET,Cloudflare,fake-ip
-    - RULE-SET,Proxy,fake-ip
+    - RULE-SET,cloudflare,fake-ip
+    - RULE-SET,proxy,fake-ip
     - RULE-SET,cn,real-ip
     - MATCH,real-ip
   nameserver:
@@ -108,8 +108,9 @@ dns:
     - https://doh.pub/dns-query
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   nameserver-policy:
-    "RULE-SET:217heidai-AD": [rcode://name_error]
-    "RULE-SET:meituan": [rcode://name_error]
+    "RULE-SET:chiao_adrules,meituan_ad": [rcode://name_error]
+    "RULE-SET:direct,private,download": [1.12.12.12, 180.184.1.1]
+    "RULE-SET:networktest,microsoft,youtube,google,twitter,telegram,meta,facebook,cloudflare,proxy": [https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24, https://cloudflare-dns.com/dns-query]
     "+.tv.apple.com": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
     "RULE-SET:appletv": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
     "RULE-SET:aisuite": [https://1.1.1.1/dns-query#disable-ipv6=true&skip-cert-verify=true]
@@ -250,17 +251,14 @@ proxy-groups:
 
 sub-rules:
   quic-logic:
-    - RULE-SET,cn,DIRECT
-    - RULE-SET,cn_ip,DIRECT
     - RULE-SET,aisuite,REJECT
-    - RULE-SET,youtube,REJECT
+    - OR,((RULE-SET,cn),(RULE-SET,cn_ip,no-resolve)),DIRECT
+    - OR,((RULE-SET,youtube),(RULE-SET,youtube_ip,no-resolve)),REJECT
     - OR,((RULE-SET,google),(RULE-SET,google_ip,no-resolve)),REJECT
     - MATCH,PASS
   stun-logic:
-    - DOMAIN-KEYWORD,stun,🔌 STUN
-    - DOMAIN-KEYWORD,turn,🔌 STUN
-    - RULE-SET,stun,🔌 STUN
-    - RULE-SET,stun_ip,🔌 STUN,no-resolve
+    - OR,((DOMAIN-KEYWORD,stun),(DOMAIN-KEYWORD,turn)),🔌 STUN
+    - OR,((RULE-SET,stun),(RULE-SET,stun_ip,no-resolve)),🔌 STUN
     - MATCH,PASS
   gms-fcm:
     - DOMAIN,mtalk.google.com,DIRECT
@@ -269,21 +267,22 @@ sub-rules:
     - MATCH,PASS
 
 rules:
+- RULE-SET,meituan_ad,🚫 广告净化
+- OR,((RULE-SET,chiao_adrules),(RULE-SET,chiao_adrules_ip,no-resolve)),🚫 广告净化
 - OR,((DST-PORT,123),(DST-PORT,6881-6889)),DIRECT
 - OR,((RULE-SET,direct),(RULE-SET,private),(RULE-SET,private_ip,no-resolve)),DIRECT
-- IP-CIDR,95.161.76.100/31,REJECT-DROP,no-resolve
-
-- OR,((RULE-SET,217heidai-AD),(RULE-SET,meituan)),🚫 广告净化
-- OR,((RULE-SET,httpdns),(RULE-SET,httpdns_ip,no-resolve)),REJECT
 
 - SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,443))),quic-logic
 - SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,3478-3481,5349,19302))),stun-logic
 - SUB-RULE,(DST-PORT,5222,5228-5230),gms-fcm
 
 - OR,((RULE-SET,WeChat),(RULE-SET,WeChat_ip,no-resolve)),🧱 国内
+- OR,((RULE-SET,download),(RULE-SET,download_ip,no-resolve)),DIRECT
 - DOMAIN-SUFFIX,push.apple.com,DIRECT
 - DOMAIN-SUFFIX,courier-push-apple.com.akadns.net,DIRECT
 - RULE-SET,aisuite,🤖 AI
+- RULE-SET,networktest,🚀 网速测试
+
 - DOMAIN-SUFFIX,podcasts.apple.com,🍎 Apple Proxy
 - OR,((RULE-SET,appletv),(RULE-SET,applemusic)),🍎 Apple 媒体
 - OR,((RULE-SET,AppleAPI-DOMAIN),(RULE-SET,AppleAPI-IP,no-resolve)),🍎 Apple Proxy
@@ -291,41 +290,46 @@ rules:
 - RULE-SET,AppleDomainCDN,🍎 Apple
 - RULE-SET,AppleDomain,🍎 Apple
 
-- DOMAIN,redirector.c.play.google.com,DIRECT
-- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.googlevideo\.com$,DIRECT
-- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-lra8j\.com$,DIRECT
+- DOMAIN,redirector.c.play.google.com,🧱 国内
+- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.googlevideo\.com$,🧱 国内
+- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-lra8j\.com$,🧱 国内
 - DOMAIN-REGEX,^[a-z0-9-]+-intl\.biligame\.net$,🎮 Games
 - DOMAIN-REGEX,^.*trickcal.*\.bilibiligame\.net$,🎮 Games
 - RULE-SET,mahjong,🎮 GamesCN
 - RULE-SET,games-cn,🎮 GamesCN
-- RULE-SET,games,🎮 Games
-- RULE-SET,PrivateTracker,DIRECT
-- RULE-SET,networktest,🚀 网速测试
+- OR,((RULE-SET,games),(RULE-SET,games_ip,no-resolve)),🎮 Games
 - RULE-SET,microsoft,🖥 Microsoft
-- RULE-SET,youtube,🎬 YouTube
+- OR,((RULE-SET,youtube),(RULE-SET,youtube_ip,no-resolve)),🎬 YouTube
 - OR,((RULE-SET,google),(RULE-SET,google_ip,no-resolve)),🌐 Google
 - OR,((RULE-SET,twitter),(RULE-SET,twitter_ip,no-resolve)),📟 Twitter
 - OR,((RULE-SET,telegram),(RULE-SET,telegram_ip,no-resolve)),📲 Telegram
 - OR,((RULE-SET,meta),(RULE-SET,facebook),(RULE-SET,facebook_ip,no-resolve)),♾️ Meta
-- OR,((RULE-SET,Cloudflare),(RULE-SET,Proxy),(RULE-SET,ProxyIP,no-resolve)),🌐 国外
+- OR,((RULE-SET,cloudflare),(RULE-SET,proxy),(RULE-SET,proxy_ip,no-resolve)),🌐 国外
 - OR,((RULE-SET,cn),(RULE-SET,cn_ip,no-resolve)),🧱 国内
 - MATCH,🐟 漏网之鱼
 
 rule-providers:
-  217heidai-AD:
+  chiao_adrules:
     type: http
     interval: 86400
     behavior: domain
     format: mrs
-    path: ./rules/217heidai-adblockfilters.mrs
-    url: "https://raw.githubusercontent.com/217heidai/adblockfilters/main/rules/adblockmihomo.mrs"
-  meituan:
+    path: ./rules/chiao_adrules.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/adrules.mrs"
+  chiao_adrules_ip:
+    type: http
+    interval: 86400
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/chiao_adrules_ip.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/adrules.mrs"
+  meituan_ad:
     type: http
     interval: 86400
     behavior: domain
     format: yaml
-    path: ./rules/meituan.yaml
-    url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/meituan.yaml"
+    path: ./rules/meituan_ad.yaml
+    url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/meituan_ad.yaml"
   stun:
     type: http
     interval: 86400
@@ -340,34 +344,20 @@ rule-providers:
     format: mrs
     path: ./rules/stun_ip.mrs
     url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/STUN/STUN_OCD_IP.mrs"
-  httpdns:
+  proxy:
     type: http
     interval: 86400
     behavior: domain
     format: mrs
-    path: ./rules/httpdns.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_Domain.mrs"
-  httpdns_ip:
+    path: ./rules/proxy.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/proxy.mrs"
+  proxy_ip:
     type: http
     interval: 86400
     behavior: ipcidr
     format: mrs
-    path: ./rules/httpdns_ip.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/BlockHttpDNS/BlockHttpDNS_OCD_IP.mrs"
-  Proxy:
-    type: http
-    interval: 86400
-    behavior: domain
-    format: mrs
-    path: ./rules/Proxy.mrs
-    url: "https://raw.githubusercontent.com/666OS/rules/release/mihomo/domain/Proxy.mrs"
-  ProxyIP:
-    type: http
-    interval: 86400
-    behavior: ipcidr
-    format: mrs
-    path: ./rules/ProxyIP.mrs
-    url: "https://raw.githubusercontent.com/666OS/rules/release/mihomo/ip/Proxy.mrs"
+    path: ./rules/proxy_ip.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/proxy.mrs"
   appletv:
     type: http
     interval: 86400
@@ -493,13 +483,20 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/youtube.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/youtube.mrs"
-  Cloudflare:
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/youtube.mrs"
+  youtube_ip:
+    type: http
+    interval: 86400
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/youtube_ip.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/youtube.mrs"
+  cloudflare:
     type: http
     interval: 86400
     behavior: domain
     format: mrs
-    path: ./rules/Cloudflare.mrs
+    path: ./rules/cloudflare.mrs
     url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs"
   aisuite:
     type: http
@@ -529,13 +526,20 @@ rule-providers:
     format: mrs
     path: ./rules/wechat-ip.mrs
     url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/IP/wechat-ip.mrs"
-  PrivateTracker:
+  download:
     type: http
     interval: 86400
     behavior: domain
     format: mrs
-    path: ./rules/PrivateTracker.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/category-public-tracker.mrs"
+    path: ./rules/download.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/dmca.mrs"
+  download_ip:
+    type: http
+    interval: 86400
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/download_ip.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/dmca.mrs"
   mahjong:
     type: http
     interval: 86400
@@ -549,14 +553,21 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/games-cn.mrs
-    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/games-cn.mrs"
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games-cn.mrs"
   games:
     type: http
     interval: 86400
     behavior: domain
     format: mrs
     path: ./rules/games.mrs
-    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/games.mrs"
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games.mrs"
+  games_ip:
+    type: http
+    interval: 86400
+    behavior: ipcidr
+    format: mrs
+    path: ./rules/games_ip.mrs
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/games.mrs"
   private:
     type: http
     interval: 86400
@@ -577,7 +588,7 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/direct.mrs
-    url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/Domain/direct.mrs"
+    url: "https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs"
   cn:
     type: http
     interval: 86400
@@ -598,4 +609,4 @@ rule-providers:
     behavior: domain
     format: mrs
     path: ./rules/fakeip-filter.mrs
-    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/fakeip-filter.mrs"
+    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/fake-ip-filter.mrs"
