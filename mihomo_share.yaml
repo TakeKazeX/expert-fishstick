@@ -1,22 +1,31 @@
 ### self-use config
-### update date: 2026-03-03-02:00
+### update date: 2026-03-07-16:00
 base_provider: &base_provider { type: http, interval: 86400, health-check: { enable: true, url: "https://www.gstatic.com/generate_204", interval: 1800 } }
 d_mrs: &d_mrs { type: http, interval: 86400, behavior: domain, format: mrs }
 d_yaml: &d_yaml { type: http, interval: 86400, behavior: domain, format: yaml }
 d_list: &d_list { type: http, interval: 86400, behavior: classical, format: text }
 ip_mrs: &ip_mrs { type: http, interval: 86400, behavior: ipcidr, format: mrs }
+ip_yaml: &ip_yaml { type: http, interval: 86400, behavior: ipcidr, format: yaml }
 
-mixed-port: 7892
-tproxy-port: 7894
-ipv6: true
-find-process-mode: strict
+authentication:
+  - mingzi:passw0rd
+skip-auth-prefixes:
+  - 192.168.1.0/24
+  - 192.168.31.0/24
+  - 192.168.100.0/24
+  - 127.0.0.1/8
+
 external-controller: 0.0.0.0:9090
 external-ui: ui
+secret: "kirbyink"
+ipv6: true
+mixed-port: 7892
+tproxy-port: 7894
+find-process-mode: strict
 external-ui-url: https://github.com/Zephyruso/zashboard/releases/latest/download/dist-cdn-fonts.zip
 global-ua: mihomo
 mode: rule
 log-level: warning
-allow-lan: true
 udp: true
 unified-delay: true
 tcp-concurrent: true
@@ -24,9 +33,17 @@ etag-support: true
 disable-keep-alive: false
 keep-alive-idle: 240
 keep-alive-interval: 60
+allow-lan: true
+bind-address: '*'
 profile:
   store-selected: true
   store-fake-ip: true
+
+geox-url:
+  geosite: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb"
+  geoip: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  asn: "https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/GeoLite2-ASN.mmdb"
 
 hosts:
   cn.bing.com: global.bing.com
@@ -54,6 +71,7 @@ sniffer:
       ports: [443, 8443]
   skip-domain:
     - "Mijia Cloud"
+    - "dlg.io.mi.com"
     - "+.push.apple.com"
 
 dns:
@@ -68,7 +86,6 @@ dns:
     - https://223.5.5.5/dns-query
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
-  fake-ip-range6: fd00::/18
   fake-ip-filter-mode: rule
   fake-ip-filter:
     - RULE-SET,fakeip-filter,real-ip
@@ -76,16 +93,14 @@ dns:
     - RULE-SET,private,real-ip
     - RULE-SET,stun,real-ip
     - RULE-SET,download,real-ip
+    - RULE-SET,fcm,real-ip
     - DOMAIN-REGEX,^(stun|turn)\..*$,real-ip
     - DOMAIN-REGEX,^.*(\.stun\.|\.turn\.).*$,real-ip
-    - DOMAIN-SUFFIX,mtalk.google.com,real-ip
-    - DOMAIN-REGEX,.*.mtalk.google.com,real-ip
-    - DOMAIN-REGEX,(^|\\.)(alt[1-8]-mtalk|mtalk|mtalk4)\\.google\\.com$,real-ip
-    - DOMAIN-SUFFIX,push.apple.com,real-ip
-    - DOMAIN-SUFFIX,courier-push-apple.com.akadns.net,real-ip
-    - DOMAIN-SUFFIX,podcasts.apple.com,fake-ip
     - DOMAIN-REGEX,^[a-z0-9-]+-intl\.biligame\.net$,fake-ip
     - DOMAIN-REGEX,^.*trickcal.*\.bilibiligame\.net$,fake-ip
+    - DOMAIN-SUFFIX,push.apple.com,real-ip
+    - DOMAIN-SUFFIX,courier-push-apple.com.akadns.net,real-ip
+    - RULE-SET,atv_proxy,fake-ip
     - RULE-SET,appletv,real-ip
     - RULE-SET,applemusic,real-ip
     - RULE-SET,AppleAPI-DOMAIN,fake-ip
@@ -110,16 +125,16 @@ dns:
     - https://doh.pub/dns-query
     - https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24
   nameserver-policy:
-    "RULE-SET:chiao_adrules": [rcode://name_error]
-    "RULE-SET:direct,private,download": [1.12.12.12, 180.184.1.1]
-    "RULE-SET:networktest,microsoft,youtube,google,twitter,telegram,meta,facebook,cloudflare,proxy": [https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24, https://cloudflare-dns.com/dns-query]
-    "+.tv.apple.com": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
-    "RULE-SET:appletv": [101.101.101.101#disable-ipv6=true&skip-cert-verify=true]
-    "RULE-SET:aisuite": [https://1.1.1.1/dns-query#disable-ipv6=true&skip-cert-verify=true]
-    "RULE-SET:WeChat": [https://doh.pub/dns-query#disable-ipv6=true&skip-cert-verify=true]
+    "RULE-SET:chiao_adrules": ['rcode://name_error']
+    "RULE-SET:direct,private,download": ['180.184.1.1', 'quic://223.5.5.5:853', 'https://1.12.12.12/dns-query']
+    "RULE-SET:networktest,microsoft,youtube,google,twitter,telegram,meta,facebook,cloudflare,proxy": ['https://8.8.8.8/dns-query#RULES&ecs=223.5.5.0/24', 'https://cloudflare-dns.com/dns-query']
+    "+.tv.apple.com": ['101.101.101.101#disable-ipv6=true']
+    "RULE-SET:appletv": ['101.101.101.101#disable-ipv6=true']
+    "RULE-SET:aisuite": ['https://1.1.1.1/dns-query#disable-ipv6=true']
+    "RULE-SET:WeChat": ['https://doh.pub/dns-query#disable-ipv6=true']
 
 tun:
-  enable: true
+  enable: false
   stack: gvisor
   dns-hijack: ["any:53","tcp://any:53"]
   auto-route: true
@@ -265,18 +280,21 @@ proxy-groups:
 sub-rules:
   quic-logic:
     - RULE-SET,aisuite,REJECT
-    - OR,((RULE-SET,cn),(RULE-SET,cn_ip,no-resolve)),🟢 直连
+    - OR,((RULE-SET,cn),(RULE-SET,cn_ip,no-resolve)),🧱 国内
     - OR,((RULE-SET,youtube),(RULE-SET,youtube_ip,no-resolve)),REJECT
     - OR,((RULE-SET,google),(RULE-SET,google_ip,no-resolve)),REJECT
     - MATCH,PASS
   stun-logic:
     - OR,((DOMAIN-KEYWORD,stun),(DOMAIN-KEYWORD,turn)),🔌 STUN
     - OR,((RULE-SET,stun),(RULE-SET,stun_ip,no-resolve)),🔌 STUN
+    - OR,((RULE-SET,google),(RULE-SET,google_ip,no-resolve)),🔌 STUN
+    - DST-PORT,3478/19302,🔌 STUN
+    - IP-CIDR,20.201.220.4/32,🔌 STUN
+    - IP-CIDR,162.159.207.0/24,🔌 STUN
+    - IP-CIDR6,2606:4700:49::/48,🔌 STUN
     - MATCH,PASS
   gms-fcm:
-    - DOMAIN-SUFFIX,mtalk.google.com,🟢 直连
-    - DOMAIN-REGEX,.*.mtalk.google.com,🟢 直连
-    - DOMAIN-REGEX,(^|\\.)(alt[1-8]-mtalk|mtalk|mtalk4)\\.google\\.com$,🟢 直连
+    - OR,((RULE-SET,fcm),(RULE-SET,fcm_ip,no-resolve)),🧱 国内
     - MATCH,PASS
 
 rules:
@@ -286,8 +304,8 @@ rules:
 - OR,((RULE-SET,direct),(RULE-SET,private),(RULE-SET,private_ip,no-resolve)),🟢 直连
 
 - SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,443))),quic-logic
-- SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,3478-3481,5349,19302))),stun-logic
-- SUB-RULE,(DST-PORT,5222,5228-5230),gms-fcm
+- SUB-RULE,(AND,((NETWORK,UDP),(DST-PORT,3478-3481/3544/5349/19302))),stun-logic
+- SUB-RULE,(DST-PORT,5222/5228-5230),gms-fcm
 
 - OR,((RULE-SET,WeChat),(RULE-SET,WeChat_ip,no-resolve)),🧱 国内
 - OR,((RULE-SET,download),(RULE-SET,download_ip,no-resolve)),🟢 直连
@@ -296,7 +314,7 @@ rules:
 - RULE-SET,aisuite,🤖 AI
 - RULE-SET,networktest,🚀 网速测试
 
-- DOMAIN-SUFFIX,podcasts.apple.com,🍎 Apple Proxy
+- RULE-SET,atv_proxy,🍎 Apple Proxy
 - OR,((RULE-SET,appletv),(RULE-SET,applemusic)),🍎 Apple 媒体
 - OR,((RULE-SET,AppleAPI-DOMAIN),(RULE-SET,AppleAPI-IP,no-resolve)),🍎 Apple Proxy
 - RULE-SET,AppleDomainNoCDN,🍎 Apple Proxy
@@ -304,8 +322,9 @@ rules:
 - RULE-SET,AppleDomain,🍎 Apple
 
 - DOMAIN,redirector.c.play.google.com,🧱 国内
-- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.googlevideo\.com$,🧱 国内
-- DOMAIN-REGEX,^r[0-9]+(\.|\-+)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-lra8j\.com$,🧱 国内
+- DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{5}\.googlevideo\.com$,🧱 国内
+- DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-lra8j\.com$,🧱 国内
+- DOMAIN-REGEX,^r+[0-9]+(---|\.)sn-(2x3|ni5|j5o)\w{5}\.xn--ngstr-cn-8za9o\.com$,🧱 国内
 - DOMAIN-REGEX,^[a-z0-9-]+-intl\.biligame\.net$,🎮 Games
 - DOMAIN-REGEX,^.*trickcal.*\.bilibiligame\.net$,🎮 Games
 - RULE-SET,mahjong,🎮 GamesCN
@@ -322,171 +341,48 @@ rules:
 - MATCH,🐟 漏网之鱼
 
 rule-providers:
-  mahjong:
-    <<: *d_yaml
-    path: ./rules/mahjong.yaml
-    url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/mahjong.yaml"
-  appletv:
-    <<: *d_mrs
-    path: ./rules/AppleTV.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/AppleTV/AppleTV_OCD_Domain.mrs"
-  applemusic:
-    <<: *d_mrs
-    path: ./rules/AppleMusic.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/AppleMusic/AppleMusic_OCD_Domain.mrs"
-  AppleAPI-DOMAIN:
-    <<: *d_list
-    path: ./rules/apple-api.list
-    url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/api-domain.list"
-  AppleAPI-IP:
-    <<: *d_list
-    path: ./rules/apple-api-ip.list
-    url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/api-ip.list"
-  AppleDomain:
-    <<: *d_list
-    path: ./rules/apple-domain.list
-    url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/domain.list"
-  AppleDomainCDN:
-    <<: *d_list
-    path: ./rules/apple-cdn-domain.list
-    url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/cdn-domain.list"
-  AppleDomainNoCDN:
-    <<: *d_list
-    path: ./rules/apple-nocdn-domain.list
-    url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/no-cn-cdn-domain.list"
-  cloudflare:
-    <<: *d_mrs
-    path: ./rules/cloudflare.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs"
-  microsoft:
-    <<: *d_mrs
-    path: ./rules/microsoft.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs"
-  aisuite:
-    <<: *d_mrs
-    path: ./rules/aisuite.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/ai.mrs"
-  networktest:
-    <<: *d_mrs
-    path: ./rules/networktest.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/speedtest.mrs"
-  chiao_adrules:
-    <<: *d_mrs
-    path: ./rules/chiao_adrules.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/adrules.mrs"
-  chiao_adrules_ip:
-    <<: *ip_mrs
-    path: ./rules/chiao_adrules_ip.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/adrules.mrs"
-  stun:
-    <<: *d_mrs
-    path: ./rules/stun.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/STUN/STUN_OCD_Domain.mrs"
-  stun_ip:
-    <<: *ip_mrs
-    path: ./rules/stun_ip.mrs
-    url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/STUN/STUN_OCD_IP.mrs"
-  proxy:
-    <<: *d_mrs
-    path: ./rules/proxy.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/proxy.mrs"
-  proxy_ip:
-    <<: *ip_mrs
-    path: ./rules/proxy_ip.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/proxy.mrs"
-  telegram:
-    <<: *d_mrs
-    path: ./rules/telegram.mrs
-    url: "https://cdn.gh-proxy.org/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs"
-  telegram_ip:
-    <<: *ip_mrs
-    path: ./rules/telegram_ip.mrs
-    url: "https://cdn.gh-proxy.org/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs"
-  google:
-    <<: *d_mrs
-    path: ./rules/google.mrs
-    url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/Domain/google.mrs"
-  google_ip:
-    <<: *ip_mrs
-    path: ./rules/google_ip.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs"
-  twitter:
-    <<: *d_mrs
-    path: ./rules/twitter.mrs
-    url: "https://raw.githubusercontent.com/666OS/rules/release/mihomo/domain/Twitter.mrs"
-  twitter_ip:
-    <<: *ip_mrs
-    path: ./rules/twitter_ip.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs"
-  meta:
-    <<: *d_mrs
-    path: ./rules/meta.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/meta.mrs"
-  facebook:
-    <<: *d_mrs
-    path: ./rules/facebook.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs"
-  facebook_ip:
-    <<: *ip_mrs
-    path: ./rules/facebook_ip.mrs
-    url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs"
-  youtube:
-    <<: *d_mrs
-    path: ./rules/youtube.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/youtube.mrs"
-  youtube_ip:
-    <<: *ip_mrs
-    path: ./rules/youtube_ip.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/youtube.mrs"
-  WeChat:
-    <<: *d_mrs
-    path: ./rules/wechat.mrs
-    url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/Domain/WeChat.mrs"
-  WeChat_ip:
-    <<: *ip_mrs
-    path: ./rules/wechat-ip.mrs
-    url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/IP/wechat-ip.mrs"
-  download:
-    <<: *d_mrs
-    path: ./rules/download.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/dmca.mrs"
-  download_ip:
-    <<: *ip_mrs
-    path: ./rules/download_ip.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/dmca.mrs"
-  games-cn:
-    <<: *d_mrs
-    path: ./rules/games-cn.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games-cn.mrs"
-  games:
-    <<: *d_mrs
-    path: ./rules/games.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games.mrs"
-  games_ip:
-    <<: *ip_mrs
-    path: ./rules/games_ip.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/games.mrs"
-  cn:
-    <<: *d_mrs
-    path: ./rules/cn.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/cn.mrs"
-  cn_ip:
-    <<: *ip_mrs
-    path: ./rules/cn_ip.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/ipcidr/cn.mrs"
-  private:
-    <<: *d_mrs
-    path: ./rules/private.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/private.mrs"
-  private_ip:
-    <<: *ip_mrs
-    path: ./rules/private_ip.mrs
-    url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/ipcidr/private.mrs"
-  fakeip-filter:
-    <<: *d_mrs
-    path: ./rules/fakeip-filter.mrs
-    url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/fake-ip-filter.mrs"
-  direct:
-    <<: *d_mrs
-    path: ./rules/direct.mrs
-    url: "https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs"
+  atv_proxy: { <<: *d_list, path: ./rules/atv_proxy.yaml, url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/mihomo/apple_media_proxy.list" }
+  mahjong: { <<: *d_yaml, path: ./rules/mahjong.yaml, url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/mihomo/mahjong.yaml" }
+  fcm: { <<: *d_yaml, path: ./rules/fcm.yaml, url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/mihomo/FCM.yaml" }
+  fcm_ip: { <<: *ip_yaml, path: ./rules/fcm_ip.yaml, url: "https://raw.githubusercontent.com/TakeKazeX/expert-fishstick/refs/heads/main/rules/mihomo/FCM_ip.yaml" }
+  appletv: { <<: *d_mrs, path: ./rules/AppleTV.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/AppleTV/AppleTV_OCD_Domain.mrs" }
+  applemusic: { <<: *d_mrs, path: ./rules/AppleMusic.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/AppleMusic/AppleMusic_OCD_Domain.mrs" }
+  AppleAPI-DOMAIN: { <<: *d_list, path: ./rules/apple-api.list, url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/api-domain.list" }
+  AppleAPI-IP: { <<: *d_list, path: ./rules/apple-api-ip.list, url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/api-ip.list" }
+  AppleDomain: { <<: *d_list, path: ./rules/apple-domain.list, url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/domain.list" }
+  AppleDomainCDN: { <<: *d_list, path: ./rules/apple-cdn-domain.list, url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/cdn-domain.list" }
+  AppleDomainNoCDN: { <<: *d_list, path: ./rules/apple-nocdn-domain.list, url: "https://github.com/Elysian-Realme/FuGfConfig/raw/refs/heads/main/ConfigFile/Loon/Apple/no-cn-cdn-domain.list" }
+  cloudflare: { <<: *d_mrs, path: ./rules/cloudflare.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/cloudflare.mrs" }
+  microsoft: { <<: *d_mrs, path: ./rules/microsoft.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/microsoft.mrs" }
+  aisuite: { <<: *d_mrs, path: ./rules/aisuite.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/ai.mrs" }
+  networktest: { <<: *d_mrs, path: ./rules/networktest.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/speedtest.mrs" }
+  chiao_adrules: { <<: *d_mrs, path: ./rules/chiao_adrules.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/adrules.mrs" }
+  chiao_adrules_ip: { <<: *ip_mrs, path: ./rules/chiao_adrules_ip.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/adrules.mrs" }
+  stun: { <<: *d_mrs, path: ./rules/stun.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/STUN/STUN_OCD_Domain.mrs" }
+  stun_ip: { <<: *ip_mrs, path: ./rules/stun_ip.mrs, url: "https://raw.githubusercontent.com/peiyingyao/Rule-for-OCD/refs/heads/master/rule/Clash/STUN/STUN_OCD_IP.mrs" }
+  proxy: { <<: *d_mrs, path: ./rules/proxy.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/proxy.mrs" }
+  proxy_ip: { <<: *ip_mrs, path: ./rules/proxy_ip.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/proxy.mrs" }
+  telegram: { <<: *d_mrs, path: ./rules/telegram.mrs, url: "https://cdn.gh-proxy.org/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/telegram.mrs" }
+  telegram_ip: { <<: *ip_mrs, path: ./rules/telegram_ip.mrs, url: "https://cdn.gh-proxy.org/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/telegram.mrs" }
+  google: { <<: *d_mrs, path: ./rules/google.mrs, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/Domain/google.mrs" }
+  google_ip: { <<: *ip_mrs, path: ./rules/google_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/google.mrs" }
+  twitter: { <<: *d_mrs, path: ./rules/twitter.mrs, url: "https://raw.githubusercontent.com/666OS/rules/release/mihomo/domain/Twitter.mrs" }
+  twitter_ip: { <<: *ip_mrs, path: ./rules/twitter_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/twitter.mrs" }
+  meta: { <<: *d_mrs, path: ./rules/meta.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/meta.mrs" }
+  facebook: { <<: *d_mrs, path: ./rules/facebook.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/facebook.mrs" }
+  facebook_ip: { <<: *ip_mrs, path: ./rules/facebook_ip.mrs, url: "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geoip/facebook.mrs" }
+  youtube: { <<: *d_mrs, path: ./rules/youtube.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/youtube.mrs" }
+  youtube_ip: { <<: *ip_mrs, path: ./rules/youtube_ip.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/youtube.mrs" }
+  WeChat: { <<: *d_mrs, path: ./rules/wechat.mrs, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/Domain/WeChat.mrs" }
+  WeChat_ip: { <<: *ip_mrs, path: ./rules/wechat-ip.mrs, url: "https://raw.githubusercontent.com/Lanlan13-14/Rules/main/rules/IP/wechat-ip.mrs" }
+  download: { <<: *d_mrs, path: ./rules/download.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/dmca.mrs" }
+  download_ip: { <<: *ip_mrs, path: ./rules/download_ip.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/dmca.mrs" }
+  games-cn: { <<: *d_mrs, path: ./rules/games-cn.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games-cn.mrs" }
+  games: { <<: *d_mrs, path: ./rules/games.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/games.mrs" }
+  games_ip: { <<: *ip_mrs, path: ./rules/games_ip.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/ipcidr/games.mrs" }
+  cn: { <<: *d_mrs, path: ./rules/cn.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/cn.mrs" }
+  cn_ip: { <<: *ip_mrs, path: ./rules/cn_ip.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/ipcidr/cn.mrs" }
+  private: { <<: *d_mrs, path: ./rules/private.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/domain/private.mrs" }
+  private_ip: { <<: *ip_mrs, path: ./rules/private_ip.mrs, url: "https://raw.githubusercontent.com/HenryChiao/mihomo_yamls/refs/heads/ruleset/meta/ipcidr/private.mrs" }
+  fakeip-filter: { <<: *d_mrs, path: ./rules/fakeip-filter.mrs, url: "https://github.com/HenryChiao/mihomo_yamls/raw/refs/heads/ruleset/meta/domain/fake-ip-filter.mrs" }
+  direct: { <<: *d_mrs, path: ./rules/direct.mrs, url: "https://github.com/666OS/rules/raw/release/mihomo/domain/Direct.mrs" }
