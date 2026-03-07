@@ -1,0 +1,3 @@
+DOMAIN,podcasts.apple.com,🍎 Apple Proxy
+DOMAIN,linear.tv.apple.com,🍎 Apple Proxy
+DOMAIN-REGEX,^linear-.*-.*-har-prod-b\.tv\.apple\.com$,🍎 Apple Proxy
