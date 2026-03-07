@@ -1,0 +1,20 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain": [
+        "majsoul-hk-client.cn-hongkong.log.aliyuncs.com"
+      ],
+      "domain_suffix": [
+        "maj-soul.com",
+        "catmajsoul.com",
+        "catmjstudio.com",
+        "mahjong-jp.net",
+        "prprmoe.xyz",
+        "sanbeiman.com",
+        "riichimj.com",
+        "lizhimahjong.com"
+      ]
+    }
+  ]
+}

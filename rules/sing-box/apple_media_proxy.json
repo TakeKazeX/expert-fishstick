@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "rules": [
+    {
+      "domain": [
+        "podcasts.apple.com",
+        "linear.tv.apple.com",
+        "linear.tv-apple.com.akadns.net",
+        "linear-fa-p-har-prod-b.tv.apple.com",
+        "linear-ak-p-har-prod-b.tv.apple.com",
+        "linear-fa-b-har-prod-b.tv.apple.com"
+      ],
+      "domain_regex": [
+        "^linear-.*-.*-har-prod-b\\.tv\\.apple\\.com$"
+      ]
+    }
+  ]
+}
