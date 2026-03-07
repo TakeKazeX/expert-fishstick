@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE_DIR = ROOT / "rules" / "mihomo"
 TARGET_DIR = ROOT / "rules" / "sing-box"
 VERSION = 4
+MERGED_IP_RULESETS = {"FCM"}
 
 DOMAIN_FIELDS = ("domain", "domain_suffix", "domain_keyword", "domain_regex")
 IP_FIELDS = ("ip_cidr",)
@@ -123,6 +124,12 @@ def convert_file(path: Path) -> dict[str, object]:
     }
 
 
+def load_entries(path: Path) -> list[tuple[str, str]]:
+    if path.suffix == ".list":
+        return load_classical_list(path)
+    return [classify_payload_item(item) for item in load_payload_yaml(path)]
+
+
 def main() -> None:
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -131,8 +138,22 @@ def main() -> None:
             continue
         if "meituan" in source_path.stem.lower():
             continue
+        if source_path.stem.endswith("_ip") and source_path.stem[:-3] in MERGED_IP_RULESETS:
+            continue
 
-        converted = convert_file(source_path)
+        entries = load_entries(source_path)
+        if source_path.stem in MERGED_IP_RULESETS:
+            merged_ip_source = source_path.with_name(f"{source_path.stem}_ip{source_path.suffix}")
+            if merged_ip_source.exists():
+                entries.extend(load_entries(merged_ip_source))
+                stale_target = TARGET_DIR / f"{merged_ip_source.stem}.json"
+                if stale_target.exists():
+                    stale_target.unlink()
+
+        converted = {
+            "version": VERSION,
+            "rules": build_rules(entries),
+        }
         target_path = TARGET_DIR / f"{source_path.stem}.json"
         target_path.write_text(
             json.dumps(converted, ensure_ascii=False, indent=2) + "\n",
