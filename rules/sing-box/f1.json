@@ -4,7 +4,8 @@
     {
       "domain": [
         "d2n9h2wits23hf.cloudfront.net",
-        "f1prodlive.akamaized.net"
+        "f1prodlive.akamaized.net",
+        "formula1.my.salesforce-scrt.com"
       ],
       "domain_suffix": [
         "f1.com",
@@ -18,6 +19,7 @@
         "f1manager.com",
         "f1play.com",
         "bitmovin.com",
+        "pingone.eu",
         "bahraingp.com",
         "saudiarabiangp.com",
         "grandprix.com.au",

@@ -53,12 +53,20 @@
       "value": "bitmovin.com"
     },
     {
+      "type": "DOMAIN-SUFFIX",
+      "value": "pingone.eu"
+    },
+    {
       "type": "DOMAIN",
       "value": "d2n9h2wits23hf.cloudfront.net"
     },
     {
       "type": "DOMAIN",
       "value": "f1prodlive.akamaized.net"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "formula1.my.salesforce-scrt.com"
     },
     {
       "type": "DOMAIN-SUFFIX",

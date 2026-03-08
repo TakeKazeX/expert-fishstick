@@ -10,8 +10,10 @@ payload:
   - DOMAIN-SUFFIX,f1manager.com
   - DOMAIN-SUFFIX,f1play.com
   - DOMAIN-SUFFIX,bitmovin.com
+  - DOMAIN-SUFFIX,pingone.eu
   - DOMAIN,d2n9h2wits23hf.cloudfront.net
   - DOMAIN,f1prodlive.akamaized.net
+  - DOMAIN,formula1.my.salesforce-scrt.com
   - DOMAIN-SUFFIX,bahraingp.com
   - DOMAIN-SUFFIX,saudiarabiangp.com
   - DOMAIN-SUFFIX,grandprix.com.au

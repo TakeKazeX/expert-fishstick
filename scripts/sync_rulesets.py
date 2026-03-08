@@ -436,7 +436,6 @@ def remove_stale_outputs(name: str, keep: set[Path]) -> None:
     stale_paths = {
         MIHOMO_DIR / f"{name}.yaml",
         MIHOMO_DIR / f"{name}_ip.yaml",
-        MIHOMO_DIR / f"{name}_classical.yaml",
     }
     for path in stale_paths - keep:
         if path.exists():
@@ -466,20 +465,20 @@ def write_outputs(name: str, source_specs: list[tuple[Path, str]], entries: list
     loon_path.write_text(render_loon(entries), encoding="utf-8")
     singbox_path.write_text(render_singbox(entries), encoding="utf-8")
 
-    if domain_entries:
-        domain_path = MIHOMO_DIR / f"{name}.yaml"
-        domain_path.write_text(render_mihomo_domain(domain_entries), encoding="utf-8")
-        mihomo_paths.add(domain_path)
-
-    if ip_entries:
-        ip_path = MIHOMO_DIR / f"{name}_ip.yaml"
-        ip_path.write_text(render_mihomo_ipcidr(ip_entries), encoding="utf-8")
-        mihomo_paths.add(ip_path)
-
     if classical_entries:
-        classical_path = MIHOMO_DIR / f"{name}_classical.yaml"
-        classical_path.write_text(render_mihomo_classical(classical_entries), encoding="utf-8")
+        classical_path = MIHOMO_DIR / f"{name}.yaml"
+        classical_path.write_text(render_mihomo_classical(entries), encoding="utf-8")
         mihomo_paths.add(classical_path)
+    else:
+        if domain_entries:
+            domain_path = MIHOMO_DIR / f"{name}.yaml"
+            domain_path.write_text(render_mihomo_domain(domain_entries), encoding="utf-8")
+            mihomo_paths.add(domain_path)
+
+        if ip_entries:
+            ip_path = MIHOMO_DIR / f"{name}_ip.yaml"
+            ip_path.write_text(render_mihomo_ipcidr(ip_entries), encoding="utf-8")
+            mihomo_paths.add(ip_path)
 
     remove_stale_outputs(name, mihomo_paths)
 

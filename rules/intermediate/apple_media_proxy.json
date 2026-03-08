@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "name": "apple_media_proxy",
+  "sources": [
+    {
+      "path": "rules/ruleset/apple_media_proxy.list",
+      "format": "classical"
+    }
+  ],
+  "entries": [
+    {
+      "type": "DOMAIN",
+      "value": "podcasts.apple.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "linear.tv.apple.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "linear.tv-apple.com.akadns.net"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "^linear-.*-.*-har-prod-b\\.tv\\.apple\\.com$"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "linear-fa-p-har-prod-b.tv.apple.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "linear-ak-p-har-prod-b.tv.apple.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "linear-fa-b-har-prod-b.tv.apple.com"
+    }
+  ],
+  "source": {
+    "path": "rules/ruleset/apple_media_proxy.list",
+    "format": "classical"
+  }
+}
