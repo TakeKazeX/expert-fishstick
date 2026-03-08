@@ -50,7 +50,7 @@ SINGBOX_RULE_GROUPS = (
     ("ip_cidr", "source_ip_cidr"),
 )
 
-MIHOMO_DOMAIN_TYPES = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-WILDCARD"}
+MIHOMO_DOMAIN_TYPES = {"DOMAIN", "DOMAIN-SUFFIX", "DOMAIN-WILDCARD", "DOMAIN-REGEX"}
 MIHOMO_IP_TYPES = {"IP-CIDR", "IP-CIDR6"}
 
 
@@ -324,6 +324,8 @@ def render_mihomo_domain(entries: list[RuleEntry]) -> str:
             lines.append(f"  - +.{entry.value}")
         elif entry.rule_type == "DOMAIN-WILDCARD":
             lines.append(f"  - {entry.value}")
+        elif entry.rule_type == "DOMAIN-REGEX":
+            lines.append(f"  - DOMAIN-REGEX,{entry.value}")
         else:
             raise ValueError(f"mihomo domain export does not support rule type: {entry.rule_type}")
     return "\n".join(lines) + "\n"

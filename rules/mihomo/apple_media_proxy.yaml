@@ -1,8 +1,8 @@
 payload:
-  - DOMAIN,podcasts.apple.com
-  - DOMAIN,linear.tv.apple.com
-  - DOMAIN,linear.tv-apple.com.akadns.net
+  - podcasts.apple.com
+  - linear.tv.apple.com
+  - linear.tv-apple.com.akadns.net
   - DOMAIN-REGEX,^linear-.*-.*-har-prod-b\.tv\.apple\.com$
-  - DOMAIN,linear-fa-p-har-prod-b.tv.apple.com
-  - DOMAIN,linear-ak-p-har-prod-b.tv.apple.com
-  - DOMAIN,linear-fa-b-har-prod-b.tv.apple.com
+  - linear-fa-p-har-prod-b.tv.apple.com
+  - linear-ak-p-har-prod-b.tv.apple.com
+  - linear-fa-b-har-prod-b.tv.apple.com
