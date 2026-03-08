@@ -1,10 +1,10 @@
 payload:
-  - +.maj-soul.com
-  - +.catmajsoul.com
-  - +.catmjstudio.com
-  - +.mahjong-jp.net
-  - majsoul-hk-client.cn-hongkong.log.aliyuncs.com
-  - +.prprmoe.xyz
-  - +.sanbeiman.com
-  - +.riichimj.com
-  - +.lizhimahjong.com
+  - "+.maj-soul.com"
+  - "+.catmajsoul.com"
+  - "+.catmjstudio.com"
+  - "+.mahjong-jp.net"
+  - "majsoul-hk-client.cn-hongkong.log.aliyuncs.com"
+  - "+.prprmoe.xyz"
+  - "+.sanbeiman.com"
+  - "+.riichimj.com"
+  - "+.lizhimahjong.com"

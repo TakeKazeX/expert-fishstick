@@ -63,8 +63,17 @@ class RuleEntry:
 
 def strip_quotes(value: str) -> str:
     if len(value) >= 2 and value[0] == value[-1] and value[0] in {"'", '"'}:
+        if value[0] == '"':
+            try:
+                return json.loads(value)
+            except json.JSONDecodeError:
+                return value[1:-1]
         return value[1:-1]
     return value
+
+
+def quote_yaml_string(value: str) -> str:
+    return json.dumps(value, ensure_ascii=False)
 
 
 def read_text(path: Path) -> str:
@@ -319,13 +328,13 @@ def render_mihomo_domain(entries: list[RuleEntry]) -> str:
     lines = ["payload:"]
     for entry in entries:
         if entry.rule_type == "DOMAIN":
-            lines.append(f"  - {entry.value}")
+            lines.append(f"  - {quote_yaml_string(entry.value)}")
         elif entry.rule_type == "DOMAIN-SUFFIX":
-            lines.append(f"  - +.{entry.value}")
+            lines.append(f"  - {quote_yaml_string(f'+.{entry.value}')}")
         elif entry.rule_type == "DOMAIN-WILDCARD":
-            lines.append(f"  - {entry.value}")
+            lines.append(f"  - {quote_yaml_string(entry.value)}")
         elif entry.rule_type == "DOMAIN-REGEX":
-            lines.append(f"  - DOMAIN-REGEX,{entry.value}")
+            lines.append(f"  - {quote_yaml_string(f'DOMAIN-REGEX,{entry.value}')}")
         else:
             raise ValueError(f"mihomo domain export does not support rule type: {entry.rule_type}")
     return "\n".join(lines) + "\n"
@@ -333,13 +342,13 @@ def render_mihomo_domain(entries: list[RuleEntry]) -> str:
 
 def render_mihomo_ipcidr(entries: list[RuleEntry]) -> str:
     lines = ["payload:"]
-    lines.extend(f"  - {entry.value}" for entry in entries)
+    lines.extend(f"  - {quote_yaml_string(entry.value)}" for entry in entries)
     return "\n".join(lines) + "\n"
 
 
 def render_mihomo_classical(entries: list[RuleEntry]) -> str:
     lines = ["payload:"]
-    lines.extend(f"  - {format_classical(entry)}" for entry in entries)
+    lines.extend(f"  - {quote_yaml_string(format_classical(entry))}" for entry in entries)
     return "\n".join(lines) + "\n"
 
 
