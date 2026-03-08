@@ -1,0 +1,172 @@
+{
+  "version": 1,
+  "name": "f1",
+  "sources": [
+    {
+      "path": "rules/ruleset/f1.list",
+      "format": "mihomo"
+    }
+  ],
+  "entries": [
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "formula1.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1experiences.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1authentics.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "fiaformula1.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "fiaformula2.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "fiaformula3.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1esports.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1manager.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1play.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "bitmovin.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "d2n9h2wits23hf.cloudfront.net"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "f1prodlive.akamaized.net"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "bahraingp.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "saudiarabiangp.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "grandprix.com.au"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "autodromoimola.it"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1miamigp.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "circuitcat.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "formula1monaco.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "monacograndprixticket.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "bakucitycircuit.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "gpcanada.ca"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "montrealgrandprix.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "silverstone.co.uk"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1austria.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "gpfrance.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "hungaroring.hu"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "spagrandprix.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "dutchgp.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "monzanet.it"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "singaporegp.sg"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "suzukacircuit.jp"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "circuitoftheamericas.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "mexicogp.mx"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1saopaulo.com.br"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "yasmarinacircuit.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "rosgonki.ru"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "f1lasvegasgrandprix.com"
+    }
+  ],
+  "source": {
+    "path": "rules/ruleset/f1.list",
+    "format": "mihomo"
+  }
+}

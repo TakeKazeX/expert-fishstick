@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "name": "mahjong",
+  "sources": [
+    {
+      "path": "rules/ruleset/mahjong.yaml",
+      "format": "mihomo"
+    }
+  ],
+  "entries": [
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "maj-soul.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "catmajsoul.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "catmjstudio.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "mahjong-jp.net"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "majsoul-hk-client.cn-hongkong.log.aliyuncs.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "prprmoe.xyz"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "sanbeiman.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "riichimj.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "lizhimahjong.com"
+    }
+  ],
+  "source": {
+    "path": "rules/ruleset/mahjong.yaml",
+    "format": "mihomo"
+  }
+}
