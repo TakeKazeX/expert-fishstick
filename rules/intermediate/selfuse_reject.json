@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "name": "selfuse_reject",
+  "sources": [
+    {
+      "path": "rules/ruleset/selfuse_reject.list",
+      "format": "classical"
+    }
+  ],
+  "entries": [
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "xingyeai.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "open.weixin.qq.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "findermp.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "finderhwy.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "finderks.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "finderpdd.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "finderd1p.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "finderqv.video.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "findertt.video.qq.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "channels.weixin.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "szminorshort.weixin.qq.com"
+    },
+    {
+      "type": "DOMAIN",
+      "value": "szextshort.weixin.qq.com"
+    }
+  ],
+  "source": {
+    "path": "rules/ruleset/selfuse_reject.list",
+    "format": "classical"
+  }
+}
