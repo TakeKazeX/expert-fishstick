@@ -13,22 +13,6 @@
       "value": "xingyeai.com"
     },
     {
-      "type": "DOMAIN",
-      "value": "open.weixin.qq.com"
-    },
-    {
-      "type": "DOMAIN-SUFFIX",
-      "value": "channels.weixin.qq.com"
-    },
-    {
-      "type": "DOMAIN",
-      "value": "szminorshort.weixin.qq.com"
-    },
-    {
-      "type": "DOMAIN",
-      "value": "szextshort.weixin.qq.com"
-    },
-    {
       "type": "DOMAIN-SUFFIX",
       "value": "kuaishouzt.com"
     },
@@ -79,6 +63,10 @@
     {
       "type": "DOMAIN-SUFFIX",
       "value": "szshort.weixin.qq.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "szextshort.weixin.qq.com"
     },
     {
       "type": "DOMAIN-SUFFIX",

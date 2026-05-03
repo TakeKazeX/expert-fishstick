@@ -1,8 +1,4 @@
 DOMAIN-SUFFIX,xingyeai.com
-DOMAIN,open.weixin.qq.com
-DOMAIN-SUFFIX,channels.weixin.qq.com
-DOMAIN,szminorshort.weixin.qq.com
-DOMAIN,szextshort.weixin.qq.com
 DOMAIN-SUFFIX,kuaishouzt.com
 DOMAIN-SUFFIX,kwimgs.com
 DOMAIN-SUFFIX,kwaiodn.com
@@ -16,6 +12,7 @@ DOMAIN-SUFFIX,wsukwai.com
 DOMAIN-SUFFIX,video.qq.com
 DOMAIN-SUFFIX,szminorshot.weixin.qq.com
 DOMAIN-SUFFIX,szshort.weixin.qq.com
+DOMAIN-SUFFIX,szextshort.weixin.qq.com
 DOMAIN-SUFFIX,ixigua.com
 DOMAIN-SUFFIX,ixiguavideo.com
 DOMAIN-SUFFIX,snssdk.com

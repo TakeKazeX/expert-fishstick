@@ -2,14 +2,8 @@
   "version": 4,
   "rules": [
     {
-      "domain": [
-        "open.weixin.qq.com",
-        "szminorshort.weixin.qq.com",
-        "szextshort.weixin.qq.com"
-      ],
       "domain_suffix": [
         "xingyeai.com",
-        "channels.weixin.qq.com",
         "kuaishouzt.com",
         "kwimgs.com",
         "kwaiodn.com",
@@ -23,6 +17,7 @@
         "video.qq.com",
         "szminorshot.weixin.qq.com",
         "szshort.weixin.qq.com",
+        "szextshort.weixin.qq.com",
         "ixigua.com",
         "ixiguavideo.com",
         "snssdk.com",
