@@ -55,6 +55,46 @@
     {
       "type": "DOMAIN",
       "value": "szextshort.weixin.qq.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "kuaishouzt.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "kwimgs.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "kwaiodn.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "yximgs.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "gifshow.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "kuaishou.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "inkwai.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "yyzqta.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "ksapisrv.com"
+    },
+    {
+      "type": "DOMAIN-SUFFIX",
+      "value": "wsukwai.com"
     }
   ],
   "source": {
