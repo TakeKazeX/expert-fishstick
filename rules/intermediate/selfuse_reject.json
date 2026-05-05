@@ -127,6 +127,26 @@
     {
       "type": "DOMAIN-SUFFIX",
       "value": "open-douyin.com"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "(?i).*\\.mcdn\\.bilivideo\\.cn$"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "(?i).*\\.mcdn\\.bilivideo\\.com$"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "(?i).*(ppio|kodo)\\.bilivideo\\.com$"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "(?i).*(mountaintoys|szbdyd|smtcdns)\\..*"
+    },
+    {
+      "type": "DOMAIN-REGEX",
+      "value": "(?i).*pcdn.*\\.biliapi\\.net$"
     }
   ],
   "source": {

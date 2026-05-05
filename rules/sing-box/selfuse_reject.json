@@ -33,6 +33,13 @@
         "bytemastatic.com",
         "douyinstatic.com",
         "open-douyin.com"
+      ],
+      "domain_regex": [
+        "(?i).*\\.mcdn\\.bilivideo\\.cn$",
+        "(?i).*\\.mcdn\\.bilivideo\\.com$",
+        "(?i).*(ppio|kodo)\\.bilivideo\\.com$",
+        "(?i).*(mountaintoys|szbdyd|smtcdns)\\..*",
+        "(?i).*pcdn.*\\.biliapi\\.net$"
       ]
     }
   ]

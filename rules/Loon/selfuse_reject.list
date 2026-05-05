@@ -28,3 +28,8 @@ DOMAIN-SUFFIX,byteimg.com
 DOMAIN-SUFFIX,bytemastatic.com
 DOMAIN-SUFFIX,douyinstatic.com
 DOMAIN-SUFFIX,open-douyin.com
+DOMAIN-REGEX,(?i).*\.mcdn\.bilivideo\.cn$
+DOMAIN-REGEX,(?i).*\.mcdn\.bilivideo\.com$
+DOMAIN-REGEX,(?i).*(ppio|kodo)\.bilivideo\.com$
+DOMAIN-REGEX,(?i).*(mountaintoys|szbdyd|smtcdns)\..*
+DOMAIN-REGEX,(?i).*pcdn.*\.biliapi\.net$
